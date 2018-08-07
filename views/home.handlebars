@@ -1,0 +1,22 @@
+<h1>Headlines</h1>
+
+<div class="grid-container full">
+    <div class="grid-x grid-margin-x">
+        {{#each articles}}
+        <div class="card" style="width: 300px;">
+            <div class="card-divider">
+                <div class="cell small-8" id="articles">{{ this.title }}</div>
+            </div>
+            <img src> {{ this.picture }} 
+            <div class="card-section">
+                {{ this.summary }} {{ this.link }}
+            </div>
+        </div>
+              {{/each}}
+
+
+
+
+        <div class="cell small-4" id="notes"></div>
+    </div>
+</div>
