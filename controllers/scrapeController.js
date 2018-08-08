@@ -43,7 +43,7 @@ module.exports = function (app) {
             res.redirect("/");
         });
     });
-    
+
     // route via request
     // app.get("/scrape", function (req, res) {
     //     request("https://www.popularmechanics.com/", function (error, response, html) {
@@ -78,7 +78,7 @@ module.exports = function (app) {
     app.get("/", function (req, res) {
         db.Article.find({}).then(function
             (articles) {
-            return res.render("/", { articles: articles });
+            return res.render("home", { articles: articles });
         }).catch(function (err) {
             return res.json(err);
         });

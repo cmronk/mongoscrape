@@ -1,8 +1,6 @@
 /* body */
-body, h1 {
+body, h1, h2, h3, p {
     font-family: 'Do Hyeon', sans-serif;
-    padding: 10px;
-    margin: 10px;
 }
 /* nav */
 
@@ -61,10 +59,19 @@ body, h1 {
     background: rgba(254, 254, 254, 0.15);
 }
 
-button {
+button, .button {
     background: black;
     color: white;
     padding: 5px;
     margin: 5px;
     align-content: right;
 }  
+
+.card {
+    text-align: center;
+
+}
+
+a {
+    color: black;
+}
