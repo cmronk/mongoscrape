@@ -1,8 +1,23 @@
-<h1>Headlines</h1>
-
+{{!-- navbar --}} 
+{{> navbar }}
 <div class="grid-container full">
-  <div class="grid-x grid-margin-x">
-    <div class="cell small-8" id="articles"></div>
-    <div class="cell small-4" id="notes"></div>
-  </div>
+    <h1>Latest Popular Mechanics News</h1>
+    {{!-- put this in a modal --}}
+    {{!-- <p>Scraped <span id="numScraped"></span> articles.</p> --}}
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            {{!-- <div class="cell small-8" id="articles"></div>
+            <div class="cell small-4" id="notes"></div> --}}
+<div class="cell small-8">
+    {{#if articles}}
+    {{#each articles}}
+        {{this}}
+    {{/each}}
+            {{else}}
+            <h4>There are presently no articles.  Please scrape to view recent articles.</h4>
+            {{/if}}
+            </div>
+        </div>
+    </div>
 </div>
+
