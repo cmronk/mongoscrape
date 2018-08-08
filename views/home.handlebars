@@ -1,16 +1,22 @@
 {{!-- navbar --}} {{> navbar }}
 <div class="grid-container full">
-    <h1>Latest Popular Mechanics News</h1>
-    {{!-- put this in a modal --}} {{!--
-    <p>Scraped
-        <span id="numScraped"></span> articles.</p> --}}
-    <div class="grid-container">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-12">
-                <div id="cardContainer">
-                    <div id="newCardDiv"></div>
-                </div>
+    <h1>Popular Mechanics News</h1>
+    {{!-- put this in a modal --}} 
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="scrapedstats"><p>Scraped <span id="numScraped"></span> articles.</p></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="cell small-12">
+            <div id="cardContainer">
+                <div id="newCardDiv"></div>
             </div>
         </div>
     </div>
 </div>
+
+{{!-- #numScraped modal --}}
+</div>
+
+{{!-- .comment-article modal --}}

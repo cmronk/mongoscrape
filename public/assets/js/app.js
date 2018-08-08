@@ -1,7 +1,7 @@
-
-// articles
+// grab articles and display info in a card... try handlebars later
 $.getJSON("/articles", function (data) {
   for (var i = 0; i < data.length; i++) {
+    console.log("link" + data[i].link);
       $("#title").append("<h3>" + data[i].title + "</h3>");
       $("#articles").append("<p data-id='" + data[i]._id + "'>" + "<br />" + data[i].summary + "<br />" + "<a href=" + data[i].link + ">link<a>" + "<br />" + "<img src=" + data[i].img + ">" + "</p>");
       $("#articles").append("<button>Save Article</button>" + "<button>Delete Article</button>" + "<button id='note'>Leave Comment</button>")
@@ -31,7 +31,7 @@ $.getJSON("/articles", function (data) {
       link.attr("target", "_blank");
 
       var body = $("<p>");
-      body.text(data[i].summary);
+      body.text(data[i].summary + "..");
 
       var button = $("<div>");
       button.addClass("button save-article");
@@ -45,10 +45,10 @@ $.getJSON("/articles", function (data) {
       button2.addClass("button comment-article");
       button2.text("Leave Comment");
 
-      link.append(title);
-      cardTitle.append(link);
+      link.append(body);
+      cardTitle.append(title);
       cardBody.append(img);
-      cardBody.append(body);
+      cardBody.append(link);
       cardBody.append(button);
       cardBody.append(button1);
       cardBody.append(button2);
@@ -57,3 +57,22 @@ $.getJSON("/articles", function (data) {
       $("#cardContainer").append(newCardDiv);
     };
 });
+
+  // ajax call for article
+  $.ajax({
+    method: "GET",
+    url: "/articles/" + thisId
+  })
+  .then(function(data) {
+    console.log(data);
+    // toggle modal?
+  })
+
+
+//   TODO
+//   modals for buttons :(
+// routing for delete & comment
+// notes 
+// styling
+
+

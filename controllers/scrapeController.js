@@ -25,7 +25,7 @@ module.exports = function (app) {
 
 
                 result.title = $(this).children(".full-item-content").find(".full-item-title").text();
-                result.link = "https://www.popularmechanics" + $(this).children("a").attr("href");
+                result.link = "https://www.popularmechanics.com/" + $(this).children("a").attr("href");
                 result.summary = $(this).find(".full-item-dek p").text();
                 var picture = $(this).children("a").find("img").attr("data-src").split("?");
                 result.img = picture[0];

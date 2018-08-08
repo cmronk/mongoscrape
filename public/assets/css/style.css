@@ -1,7 +1,13 @@
 /* body */
 body, h1, h2, h3, p {
     font-family: 'Do Hyeon', sans-serif;
+    text-align: center;
 }
+body {
+    background-image: url("../img/qbkls.png");
+
+}
+
 /* nav */
 
 .subnav-hero-section {
@@ -60,18 +66,38 @@ body, h1, h2, h3, p {
 }
 
 button, .button {
-    background: black;
-    color: white;
-    padding: 5px;
-    margin: 5px;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    margin-right: 5px; 
     align-content: right;
 }  
 
 .card {
     text-align: center;
+    color: black;
+    max-width: 80%;
+    margin-left: 10%;
+}
+
+
+.card-title {
+    background: black;
+    color: white;    
+    padding: 5px;
 
 }
 
 a {
-    color: black;
+    color: teal;
+    margin-top: 5%;
+}
+
+/* modal */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
 }
