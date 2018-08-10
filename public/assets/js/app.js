@@ -1,78 +1,137 @@
 // grab articles and display info in a card... try handlebars later
 $.getJSON("/articles", function (data) {
   for (var i = 0; i < data.length; i++) {
-    console.log("link" + data[i].link);
-      $("#title").append("<h3>" + data[i].title + "</h3>");
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + "<br />" + data[i].summary + "<br />" + "<a href=" + data[i].link + ">link<a>" + "<br />" + "<img src=" + data[i].img + ">" + "</p>");
-      $("#articles").append("<button>Save Article</button>" + "<button>Delete Article</button>" + "<button id='note'>Leave Comment</button>")
-      var numScraped = data.length;
 
-      $("#numScraped").text(numScraped);
-      console.log(numScraped);
+    $("#numScraped").text(data.length);
+    console.log(data.length);
 
-      var newCardDiv = $("<div>");
-      newCardDiv.addClass("card");
-      newCardDiv.attr("id", data[i]._id);
+    var newCardDiv = $("<div>");
+    newCardDiv.addClass("card");
+    newCardDiv.attr("id", data[i]._id);
 
-      var cardTitle = $("<div>");
-      cardTitle.addClass("card-title");
+    var cardTitle = $("<div>");
+    cardTitle.addClass("card-title");
 
-      var cardBody = $("<div>");
-      cardBody.addClass("card-body");
+    var cardBody = $("<div>");
+    cardBody.addClass("card-body");
 
-      var title = $("<h3>");
-      title.text(data[i].title);
+    var title = $("<h3>");
+    title.text(data[i].title);
 
-      var img = $("<img src=" + data[i].img + ">");
+    var img = $("<img src=" + data[i].img + ">");
 
-      var link = $("<a>");
-      link.addClass("card-body");
-      link.attr("href", data[i].link);
-      link.attr("target", "_blank");
+    var link = $("<a>");
+    link.addClass("card-body");
+    link.attr("href", data[i].link);
+    link.attr("target", "_blank");
 
-      var body = $("<p>");
-      body.text(data[i].summary + "..");
+    var body = $("<p>");
+    body.text(data[i].summary + "..");
 
-      var button = $("<div>");
-      button.addClass("button save-article");
-      button.text("Save Article");
+    var button = $("<div>");
+    button.addClass("button save-article");
+    button.text("Save Article");
+    button.attr("id", data[i]._id);
 
-      var button1 = $("<div>");
-      button1.addClass("button delete-article");
-      button1.text("Delete");
-      
-      var button2 = $("<div>");
-      button2.addClass("button comment-article");
-      button2.text("Leave Comment");
+    var button1 = $("<div>");
+    button1.addClass("button delete-article");
+    button1.text("Delete");
+    button1.attr("id", data[i]._id);
 
-      link.append(body);
-      cardTitle.append(title);
-      cardBody.append(img);
-      cardBody.append(link);
-      cardBody.append(button);
-      cardBody.append(button1);
-      cardBody.append(button2);
-      newCardDiv.append(cardTitle);
-      newCardDiv.append(cardBody);
-      $("#cardContainer").append(newCardDiv);
-    };
+    var button2 = $("<div>");
+    button2.addClass("button comment-article");
+    button2.html("<div id='noteBtn'data-open='insertNote'>Leave Comment</div>");
+    button2.attr("id", data[i]._id);
+
+    link.append(body);
+    cardTitle.append(title);
+    cardBody.append(img);
+    cardBody.append(link);
+    cardBody.append(button);
+    cardBody.append(button1);
+    cardBody.append(button2);
+    newCardDiv.append(cardTitle);
+    newCardDiv.append(cardBody);
+    $("#cardContainer").append(newCardDiv);
+  };
 });
 
-  // ajax call for article
+//   TODO
+// routing for delete & comment
+
+// clicking on add comment
+$(document).on("click", ".comment-article", function () {
+  // Empty notes
+  $("#notes").empty();
+  // Save the id
+  var thisId = $(this).attr("id");
+  console.log(thisId);
+  // Now make an ajax call for the Article
   $.ajax({
     method: "GET",
     url: "/articles/" + thisId
   })
-  .then(function(data) {
-    console.log(data);
-    // toggle modal?
+    // With that done, add the note information to the page
+    .then(function (data) {
+      // The title of the article
+      $("#noteModal").text(data.title);
+      // An input to enter a new title
+      $("#noteModal").append("<label>Comment Title</label><input type='text' id='titleinput' name='title' >");
+      // A textarea to add a new note body
+      $("#noteModal").append("<label>Add Comment Below</label><input type='text' id='bodyinput' name='body'>");
+      // A button to submit a new note, with the id of the article saved to it
+      $("#noteModal").append("<button data-id='" + data._id + "' id='savenote'type='button' data-close>Save Note</button></p>");
+      // If there's a comment in the article
+      if (data.note) {
+        // Place the title of the note in the title input
+        $("#titleinput").val(data.note.title);
+        // Place the body of the note in the body textarea
+        $("#bodyinput").val(data.note.body);
+      }
+    });
+});
+
+// to save comments
+$(document).on("click", "#savenote", function () {
+  // Grab the id associated with the article from the submit button
+  var thisId = $(this).attr("data-id");
+  // Run a POST request to change the note, using what's entered in the inputs
+  $.ajax({
+    method: "POST",
+    url: "/articles/" + thisId,
+    data: {
+      // Value taken from title input
+      title: $("#titleinput").val(),
+      // Value taken from note textarea
+      body: $("#bodyinput").val()
+    }
   })
+    // With that done
+    .then(function (data) {
+      // Log the response
+      console.log(data);
+      // Empty the notes section
+      $("#notes").empty();
+    });
+
+  // Also, remove the values entered in the input and textarea for note entry
+  $("#titleinput").val("");
+  $("#bodyinput").val("");
+});
+
+// saved articles
+$(document).on("click", ".save-article", function () {
+  // Save the id
+  var thisId = $(this).attr("id");
+  console.log(thisId);
+  // Now make an ajax call for the Article
+  $.ajax({
+    method: "GET",
+    url: "/articles/" + thisId
+  })
+});
 
 
-//   TODO
-//   modals for buttons :(
-// routing for delete & comment
-// notes 
-// styling
-
-
+// foundation modal calls
+$(scrapeNew).foundation();
+$(insertNote).foundation();

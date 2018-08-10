@@ -36,6 +36,10 @@ var ArticleSchema = new Schema({
     }
 });
 
+ArticleSchema.methods.isSaved = function() {
+    this.saved = true;
+    return this.saved;
+};
 // utilizing mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 

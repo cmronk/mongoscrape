@@ -39,12 +39,13 @@ module.exports = function (app) {
                     });
                     console.log(result)
             });
+            
             // goes home after scraping
             res.redirect("/");
         });
     });
 
-    // route via request
+    // route via request- works, commented out to use axios
     // app.get("/scrape", function (req, res) {
     //     request("https://www.popularmechanics.com/", function (error, response, html) {
     //         if (!error) {
@@ -122,4 +123,19 @@ module.exports = function (app) {
             });
     });
 
-}
+    // route to delete
+        // route to update Article with note
+        app.post("/articles/:id", function (req, res) {
+            db.Note.create(req.body)
+                .then(function (dbNote) {
+                    return db.Article.findOneAndDelete({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+                })
+                .then(function (dbArticle) {
+                    res.json(dbArticle);
+                })
+                .catch(function (err) {
+                    res.json(err);
+                });
+        });
+    }
+

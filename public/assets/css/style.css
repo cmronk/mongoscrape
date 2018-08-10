@@ -71,13 +71,21 @@ button, .button {
     border: 1px solid black;
     margin-right: 5px; 
     align-content: right;
+    padding:5px;
 }  
+
+#savenote {
+    font-size: 1rem;
+    background: black;
+    color: white;
+}
 
 .card {
     text-align: center;
     color: black;
     max-width: 80%;
     margin-left: 10%;
+    border: 1px solid black
 }
 
 
@@ -93,11 +101,7 @@ a {
     margin-top: 5%;
 }
 
-/* modal */
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
+img {
+    margin-bottom: 10px;
+    width: 100%;
 }

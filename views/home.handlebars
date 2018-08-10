@@ -1,22 +1,33 @@
 {{!-- navbar --}} {{> navbar }}
 <div class="grid-container full">
-    <h1>Popular Mechanics News</h1>
-    {{!-- put this in a modal --}} 
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="scrapedstats"><p>Scraped <span id="numScraped"></span> articles.</p></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="cell small-12">
-            <div id="cardContainer">
-                <div id="newCardDiv"></div>
+    <h2>Popular Mechanics News</h2>
+    <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <div id="cardContainer">
+                    <div id="newCardDiv"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{{!-- #numScraped modal --}}
+{{!-- #numScraped modal reveal--}}
+<div class="scrapedstats">
+    <div class="row">
+        <div class="columns">
+            <div class="scrapedstats">
+                <div class="reveal" id="scrapeNew" data-reveal>
+                    <h1>
+                        <span id="numScraped"></span> scraped articles.</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-{{!-- .comment-article modal --}}
+{{!-- notes modal reveal --}}
+<div class="reveal" id="insertNote" data-reveal>
+    {{!-- created in app.js w/ jQuery --}}
+    <h3><div id="noteModal"></div></h3>
+</div>
