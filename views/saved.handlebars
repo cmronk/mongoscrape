@@ -1,18 +1,19 @@
-{{!-- navbar --}} 
-{{> navbar }}
+{{!-- navbar --}} {{> navbar }}
 
 <div class="grid-container full">
     <h2>Saved Articles</h2>
     <div class="grid-container">
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
-                <div id="cardContainer">
-                    <div id="newCardDiv"></div>
+                <div id="savedarticles">
+                    <div id="newCardDiv">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 {{!-- #numScraped modal reveal--}}
 <div class="scrapedstats">
     <div class="row">
@@ -20,7 +21,7 @@
             <div class="scrapedstats">
                 <div class="reveal" id="scrapeNew" data-reveal>
                     <h1>
-                        <span id="numScraped"></span> new articles.
+                        <span id="numScraped"></span> Popular Mechanics articles.
                     </h1>
                 </div>
             </div>
@@ -31,5 +32,7 @@
 {{!-- notes modal reveal --}}
 <div class="reveal" id="insertNote" data-reveal>
     {{!-- created in app.js w/ jQuery --}}
-    <h3><div id="noteModal"></div></h3>
+    <h3>
+        <div id="noteModal"></div>
+    </h3>
 </div>

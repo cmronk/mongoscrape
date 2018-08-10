@@ -1,6 +1,9 @@
 // dependencies
 // requiring models
 var db = require("../models");
+var Article = require("../models/Article.js");
+var Note = require("../models/Note.js");
+
 var express = require("express");
 // requiring mongoose
 var mongoose = require("mongoose");
@@ -37,9 +40,10 @@ module.exports = function (app) {
                     .catch(function (err) {
                         return res.json(err);
                     });
-                    console.log(result)
+                console.log(result);
+                console.log(result.length);
             });
-            
+
             // goes home after scraping
             res.redirect("/");
         });
@@ -76,9 +80,22 @@ module.exports = function (app) {
     //     res.redirect("/");
     // });
 
+
+
+    app.get('/savedArticles', function(req, res) {
+        db.Article.find({saved: true})
+            .then(function(dbArticle) {
+                res.json(dbArticle);
+            })
+            .catch(function(err) {
+                res.json(err);
+        });
+    });
+
+    
     // route to get Articles from db
     app.get("/articles", function (req, res) {
-        db.Article.find({saved: false})
+        db.Article.find({ saved: false }).sort({ _id: -1 })
             .then(function (dbArticle) {
                 res.json(dbArticle);
             })
@@ -88,16 +105,14 @@ module.exports = function (app) {
     });
 
     app.get("/saved", function (req, res) {
-        db.Article.find({saved: true})
-            .then(function (dbArticle) {
-                res.json(dbArticle);
+        db.Article.find({ saved: true }).sort({ _id: -1 })
+            .then(function (dbArticles) {
+                res.json(dbArticles);
             })
             .catch(function (err) {
                 res.json(err);
             });
-        // res.render("saved");    
     });
-
 
 
     // route to grab specific Article by id and include note
@@ -127,30 +142,30 @@ module.exports = function (app) {
             });
     });
 
-    // route to delete
-        // route to update Article with note
-        app.post("/articles/:id", function (req, res) {
-            db.Note.create(req.body)
-                .then(function (dbNote) {
-                    return db.Article.findOneAndRemove({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-                })
-                .then(function (dbArticle) {
-                    res.json(dbArticle);
-                })
-                .catch(function (err) {
-                    res.json(err);
-                });
-        });
-
-        app.post("/articles/delete/:id", function (req, res) {
-            db.Article.remove({_id: req.params.id}).then(function (dbRemove) {
-              res.json(dbRemove);
-            });
-          });
-          
-          app.post("/articles/save/:id", function (req, res) {
-            db.Article.findOneAndUpdate({_id: req.params.id}, {saved: true}).then(function (dbRes) {
-              res.redirect("/");
+    // routes to delete
+    // route to update Article with note
+    app.post("/articles/:id", function (req, res) {
+        db.Note.create(req.body)
+            .then(function (dbNote) {
+                return db.Article.findOneAndRemove({ _id: req.params.id }, { note: dbNote._id }, { new: true });
             })
-          })
-    }
+            .then(function (dbArticle) {
+                res.json(dbArticle);
+            })
+            .catch(function (err) {
+                res.json(err);
+            });
+    });
+
+    app.post("/articles/delete/:id", function (req, res) {
+        db.Article.remove({ _id: req.params.id }).then(function (dbRemove) {
+            res.json(dbRemove);
+        });
+    });
+
+    app.post("/articles/save/:id", function (req, res) {
+        db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true }).then(function (dbRes) {
+            res.redirect("/");
+        })
+    })
+}

@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
+var path = require("path");
 
 // PORT
 var PORT = process.env.PORT || 3000;
@@ -22,6 +23,10 @@ app.set("view engine", "handlebars");
 app.get("/", function (req, res) {
     res.render("home");
 });
+app.use("/saved", function (req, res) {
+    res.render("saved");
+});
+
 
 // connect to DB
 var MONGODB_URI = process.env.MONGODB_URI || ("mongodb://localhost/mongoHeadlines");
@@ -29,7 +34,7 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
 // requiring routes
-var routes = require("./controllers/scrapeController.js")(app);
+require("./controllers/scrapeController.js")(app);
 
 // start server
 app.listen(PORT, function () {

@@ -1,10 +1,9 @@
 // grab articles and display info in a card... try handlebars later
 $.getJSON("/articles", function (data) {
   for (var i = 0; i < data.length; i++) {
-    var newScrapes = data.length;
-    var scrapeNum = (data.length - newScrapes);
-    $("#numScraped").text(scrapeNum);
-    console.log(data.length);
+    var totalArticles = data.length;
+    $("#numScraped").text(totalArticles);
+    scrapeNum = $("#numScraped").val();
 
     var newCardDiv = $("<div>");
     newCardDiv.addClass("card");
@@ -34,6 +33,64 @@ $.getJSON("/articles", function (data) {
     button.text("Save ");
     button.attr("id", data[i]._id);
 
+    // var button1 = $("<div>");
+    // button1.addClass("button delete-article");
+    // button1.text("Delete");
+    // button1.attr("id", data[i]._id);
+
+    // var button2 = $("<div>");
+    // button2.addClass("button comment-article");
+    // button2.html("<div id='noteBtn'data-open='insertNote'>Comment</div>");
+    // button2.attr("id", data[i]._id);
+
+    link.append(body);
+    cardTitle.append(title);
+    cardBody.append(img);
+    cardBody.append(link);
+    cardBody.append(button);
+    // cardBody.append(button1);
+    // cardBody.append(button2);
+    newCardDiv.append(cardTitle);
+    newCardDiv.append(cardBody);
+    $("#cardContainer").append(newCardDiv);
+  };
+});
+
+// saved
+$.getJSON("/savedarticles", function (data) {
+  for (var i = 0; i < data.length; i++) {
+    var totalArticles = data.length;
+    $("#numScraped").text(totalArticles);
+    scrapeNum = $("#numScraped").val();
+
+    var newCardDiv = $("<div>");
+    newCardDiv.addClass("card");
+    newCardDiv.attr("id", data[i]._id);
+
+    var cardTitle = $("<div>");
+    cardTitle.addClass("card-title");
+
+    var cardBody = $("<div>");
+    cardBody.addClass("card-body");
+
+    var title = $("<h3>");
+    title.text(data[i].title);
+
+    var img = $("<img src=" + data[i].img + ">");
+
+    var link = $("<a>");
+    link.addClass("card-body");
+    link.attr("href", data[i].link);
+    link.attr("target", "_blank");
+
+    var body = $("<p>");
+    body.text(data[i].summary + "..");
+
+    // var button = $("<div>");
+    // button.addClass("button save-article");
+    // button.text("Save ");
+    // button.attr("id", data[i]._id);
+
     var button1 = $("<div>");
     button1.addClass("button delete-article");
     button1.text("Delete");
@@ -48,17 +105,14 @@ $.getJSON("/articles", function (data) {
     cardTitle.append(title);
     cardBody.append(img);
     cardBody.append(link);
-    cardBody.append(button);
+    // cardBody.append(button);
     cardBody.append(button1);
     cardBody.append(button2);
     newCardDiv.append(cardTitle);
     newCardDiv.append(cardBody);
-    $("#cardContainer").append(newCardDiv);
+    $("#savedarticles").append(newCardDiv);
   };
 });
-
-//   TODO
-// routing for delete & comment
 
 // clicking on add comment
 $(document).on("click", ".comment-article", function () {
@@ -134,9 +188,21 @@ $(document).on("click", ".save-article", function () {
 
     }
   })
-  .done(function(data) {
-    location.reload();
+    .done(function (data) {
+      location.reload();
+    });
+});
+
+//Click to view saved article
+$(document).on("click", "#savedArts", function () {
+  $.get("/saved", function (req, res) {
+    console.log(res);
+  }).then(function (data) {
+    window.location.href = "/saved";
+  }).catch(function (err) {
+    res.json(err);
   });
+
 });
 
 // delete articles
@@ -150,7 +216,7 @@ $(document).on("click", ".delete-article", function () {
     url: "/articles/delete/" + thisId,
     data: {
     }
-  }).done(function(data) {
+  }).done(function (data) {
     console.log(data)
     location.reload();
   });
