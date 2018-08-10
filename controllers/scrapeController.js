@@ -49,7 +49,7 @@ module.exports = function (app) {
     // app.get("/scrape", function (req, res) {
     //     request("https://www.popularmechanics.com/", function (error, response, html) {
     //         if (!error) {
-    //             var $ = cheerio.load(html);
+    //             var $ = cheerio.load(response.data);
 
     //             $(".full-item").each(function (i, element) {
     //                 var result = {};
@@ -76,18 +76,9 @@ module.exports = function (app) {
     //     res.redirect("/");
     // });
 
-    app.get("/", function (req, res) {
-        db.Article.find({}).then(function
-            (articles) {
-            return res.render("home", { articles: articles });
-        }).catch(function (err) {
-            return res.json(err);
-        });
-    });
-
     // route to get Articles from db
     app.get("/articles", function (req, res) {
-        db.Article.find({})
+        db.Article.find({saved: false})
             .then(function (dbArticle) {
                 res.json(dbArticle);
             })
@@ -95,6 +86,19 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
+
+    app.get("/saved", function (req, res) {
+        db.Article.find({saved: true})
+            .then(function (dbArticle) {
+                res.json(dbArticle);
+            })
+            .catch(function (err) {
+                res.json(err);
+            });
+        // res.render("saved");    
+    });
+
+
 
     // route to grab specific Article by id and include note
     app.get("/articles/:id", function (req, res) {
@@ -128,7 +132,7 @@ module.exports = function (app) {
         app.post("/articles/:id", function (req, res) {
             db.Note.create(req.body)
                 .then(function (dbNote) {
-                    return db.Article.findOneAndDelete({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+                    return db.Article.findOneAndRemove({ _id: req.params.id }, { note: dbNote._id }, { new: true });
                 })
                 .then(function (dbArticle) {
                     res.json(dbArticle);
@@ -137,5 +141,16 @@ module.exports = function (app) {
                     res.json(err);
                 });
         });
-    }
 
+        app.post("/articles/delete/:id", function (req, res) {
+            db.Article.remove({_id: req.params.id}).then(function (dbRemove) {
+              res.json(dbRemove);
+            });
+          });
+          
+          app.post("/articles/save/:id", function (req, res) {
+            db.Article.findOneAndUpdate({_id: req.params.id}, {saved: true}).then(function (dbRes) {
+              res.redirect("/");
+            })
+          })
+    }

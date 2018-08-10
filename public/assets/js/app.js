@@ -1,8 +1,9 @@
 // grab articles and display info in a card... try handlebars later
 $.getJSON("/articles", function (data) {
   for (var i = 0; i < data.length; i++) {
-
-    $("#numScraped").text(data.length);
+    var newScrapes = data.length;
+    var scrapeNum = (data.length - newScrapes);
+    $("#numScraped").text(scrapeNum);
     console.log(data.length);
 
     var newCardDiv = $("<div>");
@@ -30,7 +31,7 @@ $.getJSON("/articles", function (data) {
 
     var button = $("<div>");
     button.addClass("button save-article");
-    button.text("Save Article");
+    button.text("Save ");
     button.attr("id", data[i]._id);
 
     var button1 = $("<div>");
@@ -40,7 +41,7 @@ $.getJSON("/articles", function (data) {
 
     var button2 = $("<div>");
     button2.addClass("button comment-article");
-    button2.html("<div id='noteBtn'data-open='insertNote'>Leave Comment</div>");
+    button2.html("<div id='noteBtn'data-open='insertNote'>Comment</div>");
     button2.attr("id", data[i]._id);
 
     link.append(body);
@@ -124,11 +125,35 @@ $(document).on("click", ".save-article", function () {
   // Save the id
   var thisId = $(this).attr("id");
   console.log(thisId);
+  console.log
   // Now make an ajax call for the Article
   $.ajax({
-    method: "GET",
-    url: "/articles/" + thisId
+    method: "POST",
+    url: "/articles/save/" + thisId,
+    data: {
+
+    }
   })
+  .done(function(data) {
+    location.reload();
+  });
+});
+
+// delete articles
+$(document).on("click", ".delete-article", function () {
+  // Save the id
+  var thisId = $(this).attr("id");
+  console.log(thisId);
+  // Now make an ajax call for the Article
+  $.ajax({
+    method: "POST",
+    url: "/articles/delete/" + thisId,
+    data: {
+    }
+  }).done(function(data) {
+    console.log(data)
+    location.reload();
+  });
 });
 
 
